@@ -6,6 +6,7 @@ const MAX_TICK_SPEED = 110
 const MAX_TICK_MUTATION = 10
 const LAG_SPIKE_CHANCE = 0.0009
 const MAX_LAG_SPIKE_TIME = 4000
+const TICK_SPEED_CHANGE_CHANCE = 0.5
 
 
 let tickSpeed = 50
@@ -46,7 +47,17 @@ function generateLine(n) {
   const chars = words.map(readWord)
     .join('')
 
-  return `${leftpad(n, 7)}: ${words.join(' ')}  ${chars}`
+  const splitWords = words.map(word => {
+    return word.substr(0, 2) + ' ' + word.substr(2)
+  })
+
+  const displayWords = [
+    splitWords.slice(0, 4).join(' '),
+    splitWords.slice(4).join(' ')
+  ]
+
+  // return `${leftpad(n, 7)}: ${words.join(' ')}  ${chars}`
+  return `${leftpad(n, 7)}0  ${displayWords.join('  ')}  |${chars}|`
 }
 
 
@@ -65,11 +76,26 @@ function mutateTickSpeed() {
 function tick(n) {
   console.log(generateLine(n.toString(16)))
 
-  mutateTickSpeed()
+  // don't mutate tick speed every time...
+  const speedChanges = Math.random() <= TICK_SPEED_CHANGE_CHANCE
 
-  let delay = Math.random() <= LAG_SPIKE_CHANCE
-    ? Math.floor(Math.random() * MAX_LAG_SPIKE_TIME)
-    : tickSpeed
+  let delay = tickSpeed
+
+  if (speedChanges) {
+    mutateTickSpeed()
+
+    // update to new tick speed
+    delay = tickSpeed
+
+    const lagSpike = Math.random() <= LAG_SPIKE_CHANCE
+
+    if (lagSpike) {
+      delay = Math.floor(Math.random() * MAX_LAG_SPIKE_TIME)
+
+      // after the lag spike, the speed will be very fast
+      tickSpeed = MIN_TICK_SPEED
+    }
+  }
 
   setTimeout(() => tick(n + 1), delay)
 }
