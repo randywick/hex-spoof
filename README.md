@@ -1,3 +1,14 @@
+# hex-spoof
+
+A simple script to randomize and display an infinite stream of "hexdump" output.
+
+### but why?
+
+After watching [27](https://www.youtube.com/watch?v=dLRLYPiaAoA), a YouTube short by [exurb1a](https://www.youtube.com/channel/UCimiUgDLbi6P17BdaCZpVbg), an excellent content creator, I decided to write a similar scrolling wall of gibberish, with the only real goal of sequencing output such that it presented a believable rate consistent with a processor under varying load.
+
+It's more interesting to observe than it ought to be, but that isn't saying much.
+
+
 ```
 0000e340  07 a7 de 79 b8 6c 8f 6f  e1 8f 0c 07 9d b1 bd dd  |...y.l.o........|
 0000e350  0a d4 72 42 9a b4 0c 94  ac df 31 1a ef 61 19 04  |..rB......1..a..|
